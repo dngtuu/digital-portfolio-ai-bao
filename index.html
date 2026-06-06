@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Portfolio | Portfolio Kỹ thuật số</title>
+  <style>
+    /* ==================== CÀI ĐẶT CHUNG ==================== */
+    :root {
+      --green-900: #073326;
+      --green-800: #104735;
+      --green-700: #176b4c;
+      --green-600: #1f8a62;
+      --green-100: #e8f6ef;
+      --blue-100: #eaf5ff;
+      --yellow-100: #fff5d6;
+      --white: #ffffff;
+      --gray-50: #f6f8f7;
+      --gray-100: #edf1ef;
+      --gray-200: #d8e2de;
+      --gray-500: #66736f;
+      --gray-700: #35443f;
+      --dark: #16231f;
+      --shadow-sm: 0 8px 22px rgba(7, 51, 38, 0.08);
+      --shadow-md: 0 18px 42px rgba(7, 51, 38, 0.13);
+      --radius: 8px;
+      --container: 1160px;
+      --nav-height: 72px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, Poppins, Roboto, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--gray-50);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    section {
+      padding: 88px 20px;
+      scroll-margin-top: 92px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      max-width: 780px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-700);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .section-title {
+      color: var(--green-900);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.16;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      color: var(--gray-500);
+      font-size: 1.03rem;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid rgba(16, 71, 53, 0.1);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(31, 138, 98, 0.35);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--green-700);
+      color: var(--white);
+      box-shadow: 0 10px 22px rgba(23, 107, 76, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-900);
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--green-800);
+      border-color: var(--gray-200);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green-600);
+      color: var(--green-700);
+    }
+
+    .btn-disabled {
+      background: var(--gray-100);
+      color: var(--gray-500);
+      border-color: var(--gray-200);
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .btn-disabled:hover {
+      transform: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-700);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .placeholder {
+      min-height: 150px;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      text-align: center;
+      color: var(--green-700);
+      font-weight: 800;
+      border: 2px dashed #9ccbb4;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(232, 246, 239, 0.95), rgba(234, 245, 255, 0.8)),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.5) 0 12px, rgba(232, 246, 239, 0.4) 12px 24px);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==================== HEADER / NAVBAR ==================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(16, 71, 53, 0.1);
+      backdrop-filter: blur(16px);
+    }
+
+    .navbar {
+      max-width: var(--container);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-900);
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green-700), var(--green-900));
+      color: var(--white);
+      box-shadow: 0 10px 22px rgba(16, 71, 53, 0.22);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--gray-500);
+      font-size: 0.93rem;
+      font-weight: 800;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: var(--green-100);
+      color: var(--green-700);
+    }
+
+    .hamburger {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: var(--radius);
+      background: var(--green-100);
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      margin: 5px auto;
+      background: var(--green-900);
+      border-radius: 999px;
+      transition: 0.25s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ==================== HERO ==================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 126px;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(31, 138, 98, 0.16), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(234, 245, 255, 0.9), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #f6f8f7 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      align-items: center;
+      gap: 42px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      padding: 8px 13px;
+      margin-bottom: 18px;
+      border-radius: 999px;
+      background: var(--yellow-100);
+      color: #6e5600;
+      font-weight: 900;
+    }
+
+    .hero-title {
+      color: var(--green-900);
+      font-size: clamp(2.7rem, 7vw, 5.4rem);
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      margin-bottom: 14px;
+      color: var(--green-700);
+      font-size: clamp(1.08rem, 2vw, 1.4rem);
+      font-weight: 900;
+    }
+
+    .hero-text {
+      max-width: 760px;
+      margin-bottom: 26px;
+      color: var(--gray-500);
+      font-size: 1.04rem;
+    }
+
+    .hero-actions,
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-actions {
+      margin-bottom: 22px;
+    }
+
+    .dashboard {
+      padding: 22px;
+    }
+
+    .dashboard-head {
+      padding: 22px;
+      margin-bottom: 16px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green-700), var(--green-900));
+      color: var(--white);
+    }
+
+    .dashboard-head p {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      background: var(--gray-50);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--green-700);
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--gray-500);
+      font-weight: 800;
+    }
+
+    /* ==================== ABOUT / GOALS ==================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 20px;
+    }
+
+    .profile-card,
+    .goal-card,
+    .learning-card,
+    .skill-card,
+    .summary-card,
+    .evidence-card {
+      padding: 24px;
+    }
+
+    .avatar {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green-100), var(--blue-100));
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .avatar::after {
+      content: attr(data-initials);
+      color: #0f766e;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .info-label {
+      color: var(--gray-500);
+      font-weight: 800;
+    }
+
+    .info-value {
+      color: var(--green-900);
+      font-weight: 800;
+    }
+
+    .goal-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+      list-style: none;
+    }
+
+    .goal-list li {
+      display: flex;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      background: var(--gray-50);
+      color: var(--gray-500);
+      font-weight: 700;
+    }
+
+    .check {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--green-700);
+      color: var(--white);
+      font-size: 0.8rem;
+    }
+
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 15px;
+      border-radius: var(--radius);
+      background: var(--green-100);
+      font-size: 1.55rem;
+    }
+
+    .learning-card h3,
+    .summary-card h3,
+    .evidence-card h3,
+    .skill-card h3 {
+      color: var(--green-900);
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .learning-card p,
+    .summary-card p,
+    .evidence-card p {
+      color: var(--gray-500);
+    }
+
+    /* ==================== PROJECTS ==================== */
+    .projects {
+      background: var(--white);
+    }
+
+    .project-list {
+      display: grid;
+      gap: 24px;
+      padding-top: 26px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .project-detail-head {
+      margin: 0 0 18px;
+      padding: 18px 20px;
+      border: 1px solid rgba(31, 138, 98, 0.14);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green-100), rgba(234, 245, 255, 0.7));
+    }
+
+    .project-detail-head h3 {
+      color: var(--green-900);
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .project-detail-head p {
+      color: var(--gray-500);
+    }
+
+    .project-card {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      align-items: start;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      scroll-margin-top: 96px;
+    }
+
+    .project-card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    .project-number {
+      position: sticky;
+      top: 92px;
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--green-700), var(--green-900));
+      color: var(--white);
+      font-size: 1.3rem;
+      font-weight: 950;
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-panel {
+      padding: 26px;
+      border: 1px solid rgba(16, 71, 53, 0.1);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .project-head h3 {
+      color: var(--green-900);
+      font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+      line-height: 1.28;
+      margin-bottom: 10px;
+    }
+
+    .project-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .project-icon {
+      flex: 0 0 54px;
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: var(--green-100);
+      font-size: 1.5rem;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .topic-card {
+      display: block;
+      padding: 14px;
+      color: inherit;
+    }
+
+    .topic-frame {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 1px solid rgba(31, 138, 98, 0.24);
+      border-radius: var(--radius);
+      background: #06291f;
+    }
+
+    .topic-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .prompt-topic-visual {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 18px;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 50% 28%, rgba(67, 222, 140, 0.25), transparent 34%),
+        linear-gradient(145deg, #031d16, #07402f);
+    }
+
+    .prompt-chip {
+      width: max-content;
+      max-width: 100%;
+      padding: 6px 10px;
+      border: 1px solid rgba(124, 240, 184, 0.45);
+      border-radius: 999px;
+      background: rgba(7, 51, 38, 0.85);
+      color: #bdf7d9;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .prompt-topic-visual h4 {
+      color: var(--white);
+      font-size: clamp(1rem, 1.7vw, 1.35rem);
+      line-height: 1.25;
+    }
+
+    .prompt-topic-visual p {
+      color: #c8f7df;
+      font-size: 0.86rem;
+      line-height: 1.55;
+    }
+
+    .prompt-flow {
+      display: grid;
+      gap: 7px;
+    }
+
+    .prompt-flow span {
+      padding: 7px 9px;
+      border: 1px solid rgba(124, 240, 184, 0.28);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.08);
+      color: #eafff3;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .topic-content {
+      padding: 4px 2px 2px;
+    }
+
+    .topic-content h3 {
+      color: var(--green-900);
+      font-size: 1.05rem;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .topic-content p {
+      color: var(--gray-500);
+      font-size: 0.94rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .detail-box,
+    .full-box {
+      padding: 18px;
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      background: var(--gray-50);
+    }
+
+    .full-box {
+      margin-bottom: 14px;
+    }
+
+    .detail-box h4,
+    .full-box h4 {
+      color: var(--green-900);
+      margin-bottom: 8px;
+    }
+
+    .detail-box p,
+    .detail-box li,
+    .full-box p,
+    .full-box li {
+      color: var(--gray-500);
+    }
+
+    ul,
+    ol {
+      padding-left: 20px;
+    }
+
+    .code-block {
+      overflow-x: auto;
+      margin-top: 10px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: #10241d;
+      color: #dff8ea;
+      line-height: 1.6;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      background: var(--white);
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-100);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--green-100);
+      color: var(--green-900);
+    }
+
+    td {
+      color: var(--gray-500);
+    }
+
+    .evidence-action {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .project-visual {
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid rgba(31, 138, 98, 0.24);
+      border-radius: var(--radius);
+      background: #061625;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-visual img {
+      width: 100%;
+      max-height: 980px;
+      display: block;
+      object-fit: contain;
+      object-position: center top;
+      background: #061625;
+    }
+
+    .project-visual-caption {
+      padding: 12px 14px;
+      border-top: 1px solid var(--gray-100);
+      background: var(--white);
+      color: var(--gray-500);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .gallery,
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .gallery-item {
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .gallery-image {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      padding: 8px;
+      background: #06291f;
+      border-radius: var(--radius) var(--radius) 0 0;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    .gallery-caption {
+      display: block;
+      min-height: 128px;
+      padding: 14px 14px 18px;
+      border-top: 1px solid var(--gray-100);
+      background: var(--white);
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .gallery-caption strong {
+      display: block;
+      color: var(--green-900);
+      font-size: 0.98rem;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .gallery-caption span {
+      display: block;
+      color: var(--gray-500);
+      font-size: 0.9rem;
+      line-height: 1.65;
+      overflow: visible;
+    }
+
+    .gallery-placeholder {
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      border: 1px dashed rgba(15, 118, 110, 0.36);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f8fafc, #e6fffb);
+      color: #0f766e;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .principles {
+      display: grid;
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+      counter-reset: item;
+    }
+
+    .principles li {
+      position: relative;
+      counter-increment: item;
+      padding: 13px 13px 13px 50px;
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius);
+      background: var(--white);
+    }
+
+    .principles li::before {
+      content: counter(item);
+      position: absolute;
+      left: 13px;
+      top: 13px;
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--green-700);
+      color: var(--white);
+      font-weight: 900;
+      font-size: 0.82rem;
+    }
+
+    .risk-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .risk-item {
+      padding: 14px;
+      border-radius: var(--radius);
+      background: var(--yellow-100);
+      color: #695400;
+      font-weight: 800;
+    }
+
+    /* ==================== SKILLS / SUMMARY / EVIDENCE ==================== */
+    .skills-grid,
+    .summary-grid,
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .evidence-grid {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: stretch;
+    }
+
+    .level {
+      display: inline-flex;
+      padding: 5px 10px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-700);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--gray-100);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green-600), var(--green-900));
+    }
+
+    .summary {
+      background: linear-gradient(180deg, var(--gray-50), var(--white));
+    }
+
+    .summary-highlight {
+      padding: 26px;
+      margin-bottom: 18px;
+      border-radius: var(--radius);
+      background: var(--green-900);
+      color: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-highlight h3 {
+      margin-bottom: 10px;
+    }
+
+    .summary-highlight p {
+      color: rgba(255, 255, 255, 0.84);
+    }
+
+    .evidence-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      background: var(--blue-100);
+      font-size: 1.35rem;
+    }
+
+    .evidence-card .btn {
+      margin-top: 16px;
+    }
+
+    .pdf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .pdf-links a,
+    .pdf-links span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      padding: 7px 10px;
+      border: 1px solid var(--gray-200);
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--green-800);
+      font-size: 0.86rem;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .pdf-links a:hover {
+      border-color: var(--green-600);
+      color: var(--green-700);
+      transform: translateY(-2px);
+    }
+
+    /* ==================== FOOTER / BACK TO TOP ==================== */
+    .footer {
+      padding: 36px 20px;
+      background: var(--green-900);
+      color: var(--white);
+    }
+
+    .footer-grid {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .footer p,
+    .footer-info {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .footer-info {
+      display: grid;
+      gap: 8px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 900;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 999px;
+      background: var(--green-700);
+      color: var(--white);
+      font-size: 1.3rem;
+      font-weight: 900;
+      box-shadow: var(--shadow-md);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: 0.25s ease;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    /* ==================== REDESIGN: ACADEMIC TECH DASHBOARD ==================== */
+    body {
+      background:
+        linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+        #f4f7fb;
+      background-size: 32px 32px;
+      color: #17212b;
+    }
+
+    section {
+      padding: 82px 20px;
+    }
+
+    .header {
+      background: rgba(11, 24, 34, 0.94);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 30px rgba(11, 24, 34, 0.16);
+    }
+
+    .brand {
+      color: var(--white);
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      background: linear-gradient(135deg, #14b8a6, #f2b84b);
+      color: #08231f;
+      box-shadow: none;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(20, 184, 166, 0.16);
+      color: #ffffff;
+    }
+
+    .hamburger {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .hamburger span {
+      background: #ffffff;
+    }
+
+    .hero {
+      min-height: 92vh;
+      background:
+        linear-gradient(115deg, rgba(11, 24, 34, 0.98) 0%, rgba(15, 47, 58, 0.96) 70%, rgba(244, 247, 251, 0.96) 70.2%, rgba(244, 247, 251, 1) 100%);
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 5px;
+      background: linear-gradient(90deg, #14b8a6, #f2b84b, #3b82f6);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-kicker {
+      background: rgba(242, 184, 75, 0.14);
+      color: #ffd889;
+      border: 1px solid rgba(242, 184, 75, 0.35);
+    }
+
+    .hero-title {
+      color: #ffffff;
+      letter-spacing: 0;
+    }
+
+    .hero-subtitle {
+      color: #a7f3d0;
+    }
+
+    .hero-text {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .hero-tags .badge {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .btn-primary {
+      background: #f2b84b;
+      color: #102018;
+      box-shadow: 0 12px 24px rgba(242, 184, 75, 0.24);
+    }
+
+    .btn-primary:hover {
+      background: #ffd37a;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.92);
+      color: #0f766e;
+      border-color: rgba(15, 118, 110, 0.2);
+    }
+
+    .dashboard {
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      box-shadow: 0 28px 70px rgba(11, 24, 34, 0.18);
+    }
+
+    .dashboard-head {
+      background: #0b1822;
+      border-left: 5px solid #f2b84b;
+    }
+
+    .stat strong {
+      color: #0f766e;
+    }
+
+    .section-head {
+      padding-left: 18px;
+      border-left: 5px solid #f2b84b;
+    }
+
+    .eyebrow {
+      background: #e6fffb;
+      color: #0f766e;
+      border: 1px solid rgba(20, 184, 166, 0.18);
+    }
+
+    .section-title {
+      color: #10202a;
+      letter-spacing: 0;
+    }
+
+    .card,
+    .project-panel,
+    .detail-box,
+    .full-box,
+    .summary-card,
+    .evidence-card {
+      border-color: rgba(15, 33, 43, 0.1);
+      box-shadow: 0 10px 24px rgba(15, 33, 43, 0.08);
+    }
+
+    .card:hover {
+      border-color: rgba(20, 184, 166, 0.36);
+      box-shadow: 0 18px 36px rgba(15, 33, 43, 0.12);
+    }
+
+    .profile-card,
+    .goal-card {
+      border-top: 4px solid #14b8a6;
+    }
+
+    .avatar {
+      border-radius: 16px;
+      box-shadow: 0 14px 26px rgba(15, 33, 43, 0.12);
+    }
+
+    .projects {
+      background:
+        linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+    }
+
+    .topic-grid {
+      gap: 22px;
+    }
+
+    .topic-card {
+      padding: 0;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .topic-frame {
+      margin-bottom: 0;
+      border: 0;
+      border-bottom: 1px solid rgba(15, 33, 43, 0.1);
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: #071a17;
+    }
+
+    .topic-content {
+      padding: 16px;
+    }
+
+    .topic-content h3 {
+      color: #10202a;
+    }
+
+    .project-detail-head {
+      background: #0b1822;
+      color: #ffffff;
+      border: 0;
+      border-left: 5px solid #f2b84b;
+      box-shadow: 0 14px 34px rgba(11, 24, 34, 0.14);
+    }
+
+    .project-detail-head h3 {
+      color: #ffffff;
+    }
+
+    .project-detail-head p {
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .project-number {
+      background: #f2b84b;
+      color: #102018;
+      box-shadow: none;
+    }
+
+    .project-panel {
+      border-left: 5px solid #14b8a6;
+    }
+
+    .project-icon,
+    .icon,
+    .evidence-icon {
+      background: #e6fffb;
+      color: #0f766e;
+    }
+
+    th {
+      background: #e6fffb;
+      color: #10202a;
+    }
+
+    .code-block {
+      background: #0b1822;
+      color: #d1fae5;
+    }
+
+    .summary {
+      background: #f8fafc;
+    }
+
+    .summary-highlight {
+      background: linear-gradient(135deg, #0b1822, #123447);
+      border-left: 5px solid #f2b84b;
+    }
+
+    .progress span {
+      background: linear-gradient(90deg, #14b8a6, #f2b84b);
+    }
+
+    .level,
+    .badge {
+      background: #e6fffb;
+      color: #0f766e;
+    }
+
+    .footer {
+      background: #0b1822;
+      border-top: 5px solid #f2b84b;
+    }
+
+    .back-to-top {
+      background: #f2b84b;
+      color: #102018;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 980px) {
+      .hero-grid,
+      .about-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learning-grid,
+      .topic-grid,
+      .skills-grid,
+      .summary-grid,
+      .evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .detail-grid,
+      .gallery,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      section {
+        padding: 70px 16px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: var(--nav-height);
+        left: 16px;
+        right: 16px;
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        background: var(--white);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-12px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+      }
+
+      .nav-menu.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .nav-link {
+        width: 100%;
+        color: #10202a;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: #0f766e;
+        background: #e6fffb;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 116px;
+        background: linear-gradient(180deg, #0b1822 0%, #123447 100%);
+      }
+
+      .stats-grid,
+      .learning-grid,
+      .topic-grid,
+      .skills-grid,
+      .summary-grid,
+      .evidence-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card {
+        grid-template-columns: 1fr;
+      }
+
+      .project-number {
+        position: static;
+        width: 54px;
+        height: 54px;
+        font-size: 1rem;
+      }
+
+      .project-head {
+        flex-direction: column;
+      }
+
+      .evidence-action {
+        grid-template-columns: 1fr;
+      }
+
+      .info-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .topic-card {
+        display: grid;
+        grid-template-columns: 108px 1fr;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .topic-frame {
+        margin-bottom: 0;
+        border-radius: var(--radius) 0 0 var(--radius);
+        border-bottom: 0;
+        border-right: 1px solid rgba(15, 33, 43, 0.1);
+      }
+
+      .topic-content {
+        padding: 0;
+      }
+
+      .topic-content p {
+        font-size: 0.9rem;
+      }
+
+      .prompt-topic-visual {
+        padding: 10px;
+        gap: 6px;
+      }
+
+      .prompt-topic-visual h4 {
+        font-size: 0.9rem;
+      }
+
+      .prompt-topic-visual p,
+      .prompt-flow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ==================== 1. HEADER / NAVBAR ==================== -->
+  <header class="header">
+    <nav class="navbar" aria-label="Thanh điều hướng chính">
+      <a href="#home" class="brand">
+        <span class="brand-mark">DP</span>
+        <span>Digital Portfolio</span>
+      </a>
+
+      <button class="hamburger" id="hamburger" aria-label="Mở menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a class="nav-link" href="#about">Giới thiệu</a></li>
+        <li><a class="nav-link" href="#projects">Dự án</a></li>
+        <li><a class="nav-link" href="#skills">Kỹ năng</a></li>
+        <li><a class="nav-link" href="#summary">Tổng kết</a></li>
+        <li><a class="nav-link" href="#evidence">Minh chứng</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ==================== 2. HERO SECTION ==================== -->
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="hero-kicker">Bài tập dự án cá nhân</span>
+          <h1 class="hero-title">Portfolio Kỹ thuật số</h1>
+          <p class="hero-subtitle">Tổng hợp quá trình học tập, sản phẩm số và kỹ năng ứng dụng AI trong học tập</p>
+          <p class="hero-text">
+            Portfolio này được xây dựng nhằm hệ thống hóa các bài tập đã thực hiện trong môn Nhập môn Công nghệ số và
+            Ứng dụng Trí tuệ nhân tạo, đồng thời thể hiện khả năng sử dụng công cụ số, tìm kiếm thông tin học thuật,
+            viết prompt hiệu quả, hợp tác trực tuyến, sáng tạo nội dung với AI và sử dụng AI có trách nhiệm.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">Xem dự án</a>
+            <a href="#summary" class="btn btn-outline">Xem tổng kết</a>
+          </div>
+          <div class="hero-tags">
+            <span class="badge">AI trong học tập</span>
+            <span class="badge">Công cụ số</span>
+            <span class="badge">Liêm chính học thuật</span>
+          </div>
+        </div>
+
+        <aside class="dashboard card reveal" aria-label="Thống kê Portfolio">
+          <div class="dashboard-head">
+            <h2>Bảng tổng quan</h2>
+            <p>Các minh chứng chính trong Portfolio học tập cá nhân.</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat"><strong>6</strong><span>Bài tập</span></div>
+            <div class="stat"><strong>3</strong><span>Trang chính</span></div>
+            <div class="stat"><strong>1</strong><span>Portfolio hoàn chỉnh</span></div>
+            <div class="stat"><strong>100%</strong><span>Minh chứng học tập</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== 3. GIỚI THIỆU ==================== -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Giới thiệu</span>
+          <h2 class="section-title">Giới thiệu bản thân</h2>
+          <p class="section-desc">Thông tin cá nhân và mục tiêu khi xây dựng Portfolio kỹ thuật số.</p>
+        </div>
+
+        <div class="about-grid">
+          <article class="profile-card card reveal">
+            <div class="avatar">
+              <img src="bao.png" alt="Ảnh chân dung Hoàng Đình Bảo" onerror="this.style.display='none'; this.parentElement.dataset.initials='HĐB';">
+            </div>
+            <div class="info-list">
+              <div class="info-item">
+                <span class="info-label">Họ tên</span>
+                <span class="info-value">Hoàng Đình Bảo</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Mã sinh viên</span>
+                <span class="info-value">25020477</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Lớp môn học</span>
+                <span class="info-value">UET.A6</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Ngành</span>
+                <span class="info-value">Kỹ thuật máy tính</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Khóa</span>
+                <span class="info-value">K70</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="goal-card card reveal">
+            <h3>Mục tiêu Portfolio</h3>
+            <ul class="goal-list">
+              <li><span class="check">✓</span><span>Lưu trữ sản phẩm học tập cá nhân.</span></li>
+              <li><span class="check">✓</span><span>Trình bày quá trình thực hiện các bài tập.</span></li>
+              <li><span class="check">✓</span><span>Thể hiện kỹ năng số và khả năng ứng dụng AI.</span></li>
+              <li><span class="check">✓</span><span>Rèn luyện tư duy phản biện và liêm chính học thuật.</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. MỤC TIÊU HỌC TẬP ==================== -->
+    <section id="learning">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Mục tiêu học tập</span>
+          <h2 class="section-title">Những năng lực cần hình thành</h2>
+          <p class="section-desc">Bốn nhóm mục tiêu chính được thể hiện xuyên suốt các bài tập thành phần.</p>
+        </div>
+
+        <div class="learning-grid">
+          <article class="learning-card card reveal">
+            <div class="icon">▣</div>
+            <h3>Quản lý thông tin số</h3>
+            <p>Tổ chức tệp, thư mục và dữ liệu học tập một cách khoa học, dễ tìm kiếm và dễ chia sẻ.</p>
+          </article>
+          <article class="learning-card card reveal">
+            <div class="icon">⌕</div>
+            <h3>Tìm kiếm và đánh giá nguồn học thuật</h3>
+            <p>Sử dụng toán tử tìm kiếm nâng cao và đánh giá độ tin cậy của nguồn thông tin.</p>
+          </article>
+          <article class="learning-card card reveal">
+            <div class="icon">AI</div>
+            <h3>Ứng dụng AI trong học tập</h3>
+            <p>Viết prompt rõ ràng, khai thác AI để hỗ trợ học tập, nghiên cứu và sáng tạo nội dung.</p>
+          </article>
+          <article class="learning-card card reveal">
+            <div class="icon">✓</div>
+            <h3>Sử dụng AI có trách nhiệm</h3>
+            <p>Kiểm chứng thông tin, bảo vệ dữ liệu cá nhân và tuân thủ liêm chính học thuật.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. DỰ ÁN ==================== -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Dự án</span>
+          <h2 class="section-title">6 bài tập thành phần</h2>
+          <p class="section-desc">Mỗi bài tập được trình bày theo mục tiêu, công cụ, quy trình, minh chứng và bài học rút ra.</p>
+        </div>
+
+        <div class="topic-grid">
+          <a class="topic-card card reveal" href="#week-1">
+            <div class="topic-frame">
+              <img src="fd46bbe5-8333-4f9e-b468-af42de6e6c06.png" alt="Chủ đề Bài 1 - Thao tác cơ bản với tệp tin và thư mục">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 1 - Tệp tin và thư mục</h3>
+              <p>Bấm để xem mục tiêu, quy trình và minh chứng tuần 1.</p>
+            </div>
+          </a>
+
+          <a class="topic-card card reveal" href="#week-2">
+            <div class="topic-frame">
+              <img src="56f87977-45ac-497a-ac01-facc524831d3.png" alt="Chủ đề Bài 2 - Tìm kiếm và đánh giá thông tin học thuật">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 2 - Tìm kiếm học thuật</h3>
+              <p>Bấm để xem bảng đánh giá nguồn và minh chứng tuần 2.</p>
+            </div>
+          </a>
+
+          <a class="topic-card card reveal" href="#week-3">
+            <div class="topic-frame">
+              <img src="2b987aab-e08a-4135-9273-7ab5ef027a27.png" alt="Chủ đề Bài 3 - Viết prompt hiệu quả cho các tác vụ học tập">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 3 - Viết prompt hiệu quả</h3>
+              <p>Bấm để xem prompt ban đầu, prompt cải tiến và minh chứng tuần 3.</p>
+            </div>
+          </a>
+
+          <a class="topic-card card reveal" href="#week-4">
+            <div class="topic-frame">
+              <img src="3d825ae0-30b6-4987-93c7-f0b406c5461b.png" alt="Chủ đề Bài 4 - Công cụ hợp tác trực tuyến">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 4 - Hợp tác trực tuyến</h3>
+              <p>Bấm để xem công cụ, phân công nhóm và minh chứng tuần 4.</p>
+            </div>
+          </a>
+
+          <a class="topic-card card reveal" href="#week-5">
+            <div class="topic-frame">
+              <img src="4e54738a-3307-4503-b036-c1e38a12f61e.png" alt="Chủ đề Bài 5 - AI tạo sinh hỗ trợ sáng tạo nội dung">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 5 - Sản phẩm AI</h3>
+              <p>Bấm để xem quy trình sáng tạo, sản phẩm AI và minh chứng tuần 5.</p>
+            </div>
+          </a>
+
+          <a class="topic-card card reveal" href="#week-6">
+            <div class="topic-frame">
+              <img src="5e86c0ff-8f4d-4455-a898-a263cb4ff048.png" alt="Chủ đề Bài 6 - Sử dụng AI có trách nhiệm">
+            </div>
+            <div class="topic-content">
+              <h3>Bài 6 - Sử dụng AI có trách nhiệm</h3>
+              <p>Bấm để xem nguyên tắc cá nhân và minh chứng tuần 6.</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="project-detail-head reveal">
+          <h3>Chi tiết từng bài tập</h3>
+          <p>Phần dưới đây trình bày đầy đủ mục tiêu, công cụ, quy trình, bài học và minh chứng của từng tuần.</p>
+        </div>
+
+        <div class="project-list">
+          <article class="project-card card reveal" id="week-1">
+            <div class="project-number">01</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 1 - Thao tác cơ bản với tệp tin và thư mục</h3>
+                  <div class="project-badges">
+                    <span class="badge">Quản lý tệp</span>
+                    <span class="badge">Cấu trúc dữ liệu</span>
+                  </div>
+                </div>
+                <div class="project-icon">▣</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>Thực hiện các thao tác cơ bản với File Explorer: tạo thư mục, tạo tệp văn bản, đổi tên, sao chép, di chuyển, xóa và khôi phục tệp.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>File Explorer, thư mục Documents, Text Document và Recycle Bin trên Windows.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ul>
+                    <li>Mở File Explorer bằng tổ hợp phím Windows + E và truy cập Documents.</li>
+                    <li>Tạo thư mục mới, tạo tệp Text Document và đổi tên tệp thành GhiChuQuanTrong.</li>
+                    <li>Tạo thư mục con TaiLieu, sao chép và dán tệp vào thư mục này.</li>
+                    <li>Tạo tệp Dichuyen.txt, dùng Cut/Paste để di chuyển tệp sang TaiLieu.</li>
+                    <li>Xóa tệp, dùng Shift + Delete để xóa vĩnh viễn và vào Recycle Bin để khôi phục tệp cần thiết.</li>
+                  </ul>
+                </div>
+                <div class="detail-box">
+                  <h4>Bài học rút ra</h4>
+                  <p>Nắm được thao tác quản lý tệp cơ bản giúp lưu trữ dữ liệu gọn gàng, thao tác nhanh hơn và hạn chế thất lạc tài liệu học tập.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Các thao tác đã minh chứng</h4>
+                <pre class="code-block"><code>Windows + E → Documents
+New Folder → đặt tên thư mục
+New Text Document → đặt tên / đổi tên tệp
+Copy → Paste vào thư mục TaiLieu
+Cut → Paste để di chuyển Dichuyen.txt
+Delete / Shift + Delete
+Recycle Bin → khôi phục tệp</code></pre>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 1</h4>
+                <p>File trình chiếu tuần 1 trình bày minh chứng thao tác cơ bản với tệp tin và thư mục.</p>
+                <div class="pdf-links">
+                  <a href="tuan1.pptx" download>Tải minh chứng tuần 1</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card card reveal" id="week-2">
+            <div class="project-number">02</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 2 - Tìm kiếm và đánh giá thông tin học thuật</h3>
+                  <div class="project-badges">
+                    <span class="badge">site:</span>
+                    <span class="badge">filetype:</span>
+                    <span class="badge">intitle:</span>
+                  </div>
+                </div>
+                <div class="project-icon">⌕</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>Biết cách tìm kiếm nâng cao, chọn lọc và đánh giá nguồn thông tin học thuật đáng tin cậy.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>Google Search, Google Scholar, thư viện số, website học thuật và công cụ ghi chú.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ul>
+                    <li>Dùng dấu ngoặc kép để tìm cụm từ chính xác.</li>
+                    <li>Dùng site:, filetype:, intitle: để thu hẹp kết quả.</li>
+                    <li>Đánh giá tác giả, thời gian, mục đích và độ tin cậy.</li>
+                  </ul>
+                </div>
+                <div class="detail-box">
+                  <h4>Bài học rút ra</h4>
+                  <p>Không phải mọi kết quả tìm kiếm đều đáng tin; cần kiểm tra nguồn trước khi sử dụng.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Bảng đánh giá nguồn thông tin</h4>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Tên nguồn</th>
+                        <th>Độ tin cậy</th>
+                        <th>Tính cập nhật</th>
+                        <th>Mục đích sử dụng</th>
+                        <th>Nhận xét</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Google Scholar</td>
+                        <td>Cao</td>
+                        <td>Cập nhật thường xuyên theo bài báo mới</td>
+                        <td>Tìm tổng quan học thuật, bài báo, luận văn và trích dẫn liên quan đến chủ đề nghiên cứu.</td>
+                        <td>Phù hợp để bắt đầu tìm tài liệu, nhưng vẫn cần kiểm tra tác giả, nơi công bố và năm xuất bản.</td>
+                      </tr>
+                      <tr>
+                        <td>IEEE Xplore</td>
+                        <td>Cao</td>
+                        <td>Cập nhật theo hội nghị và tạp chí chuyên ngành</td>
+                        <td>Tìm tài liệu kỹ thuật, công nghệ thông tin, mạng máy tính và các nghiên cứu chuyên sâu.</td>
+                        <td>Độ tin cậy cao vì là cơ sở dữ liệu khoa học kỹ thuật; phù hợp với chủ đề công nghệ.</td>
+                      </tr>
+                      <tr>
+                        <td>SpringerLink</td>
+                        <td>Cao</td>
+                        <td>Cập nhật theo sách, chương sách và bài báo khoa học</td>
+                        <td>Tìm tài liệu nền tảng, nghiên cứu khoa học và tài liệu tham khảo chuyên ngành.</td>
+                        <td>Nội dung học thuật tốt, cần đọc tóm tắt và thông tin xuất bản để chọn tài liệu phù hợp.</td>
+                      </tr>
+                      <tr>
+                        <td>ScienceDirect</td>
+                        <td>Cao</td>
+                        <td>Cập nhật theo tạp chí khoa học và bài nghiên cứu mới</td>
+                        <td>Tìm bài báo khoa học, tài liệu nghiên cứu và các chủ đề liên ngành.</td>
+                        <td>Nguồn đáng tin cậy, nên dùng bộ lọc năm xuất bản, loại tài liệu và trích dẫn để chọn kết quả tốt.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 2</h4>
+                <p>File PDF minh chứng cho phần tìm kiếm và đánh giá thông tin học thuật.</p>
+                <div class="pdf-links">
+                  <a href="tuan2(1).pdf" target="_blank" rel="noopener">Mở PDF tuần 2</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card card reveal" id="week-3">
+            <div class="project-number">03</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 3 - Viết Prompt hiệu quả cho các tác vụ học tập</h3>
+                  <div class="project-badges">
+                    <span class="badge">Vai trò</span>
+                    <span class="badge">Bối cảnh</span>
+                    <span class="badge">Đầu ra</span>
+                  </div>
+                </div>
+                <div class="project-icon">AI</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>So sánh prompt ban đầu và prompt cải tiến để hiểu cách đặt yêu cầu rõ ràng với AI.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>ChatGPT, Copilot, Gemini hoặc công cụ AI hỗ trợ học tập khác.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ul>
+                    <li>Viết prompt ban đầu.</li>
+                    <li>Bổ sung vai trò, bối cảnh, định dạng đầu ra và tiêu chí đánh giá.</li>
+                    <li>So sánh kết quả trước và sau khi cải tiến.</li>
+                  </ul>
+                </div>
+                <div class="detail-box">
+                  <h4>Bài học rút ra</h4>
+                  <p>Prompt tốt giúp AI trả lời đúng trọng tâm hơn, dễ kiểm tra và dễ sử dụng trong học tập.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Bảng so sánh prompt</h4>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Prompt ban đầu</th>
+                        <th>Prompt cải tiến</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Hãy giải thích AI trong phát hiện xâm nhập mạng.</td>
+                        <td>
+                          Bạn là giảng viên môn Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo. Hãy giải thích chủ đề
+                          "AI trong phát hiện xâm nhập mạng (NIDS)" cho sinh viên năm nhất ngành Mạng máy tính và truyền
+                          thông dữ liệu. Trình bày theo 4 phần: khái niệm NIDS, vai trò của AI, quy trình phát hiện tấn công
+                          mạng và ví dụ tấn công thường gặp. Viết ngắn gọn, dễ hiểu, có gạch đầu dòng, tránh thuật ngữ quá
+                          phức tạp. Kết quả cần đủ nội dung để chuyển thành infographic học tập.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>
+                  Prompt cải tiến tốt hơn vì xác định rõ vai trò của AI, đối tượng người đọc, chủ đề cụ thể, cấu trúc đầu ra
+                  và tiêu chí trình bày. Nhờ đó, kết quả nhận được dễ kiểm tra, dễ chỉnh sửa và phù hợp để dùng làm nội dung
+                  cho infographic hoặc bài thuyết trình học tập.
+                </p>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 3</h4>
+                <p>File PDF minh chứng cho phần viết prompt hiệu quả.</p>
+                <div class="pdf-links">
+                  <a href="tuan3.pdf" target="_blank" rel="noopener">Mở PDF tuần 3</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card card reveal" id="week-4">
+            <div class="project-number">04</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 4 - Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm</h3>
+                  <div class="project-badges">
+                    <span class="badge">Google Drive</span>
+                    <span class="badge">Trello/Notion</span>
+                    <span class="badge">Teams</span>
+                  </div>
+                </div>
+                <div class="project-icon">◎</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>Biết cách phân công công việc, theo dõi tiến độ, chia sẻ tài liệu và phối hợp nhóm trực tuyến.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>Google Drive, Google Docs, Google Sheets, Trello, Notion và Microsoft Teams để chia sẻ tài liệu, phân công nhiệm vụ, họp trực tuyến và theo dõi tiến độ.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ul>
+                    <li>Tạo khu vực lưu trữ chung trên Google Drive và chia sẻ tài liệu cho nhóm.</li>
+                    <li>Dùng Docs/Sheets để cùng soạn thảo, ghi chú nhiệm vụ và lưu nội dung dự án.</li>
+                    <li>Dùng Trello hoặc Notion để phân công rõ người phụ trách, deadline và trạng thái công việc.</li>
+                    <li>Dùng Microsoft Teams để trao đổi, họp trực tuyến và cập nhật tiến độ.</li>
+                  </ul>
+                </div>
+                <div class="detail-box">
+                  <h4>Nhận xét hiệu quả</h4>
+                  <p>Cách làm này giúp nhóm nhìn rõ ai phụ trách phần nào, hạn chế trùng lặp công việc, phát hiện nhiệm vụ chậm tiến độ và lưu lại lịch sử chỉnh sửa để dễ kiểm tra.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Mẫu bảng phân công công việc nhóm</h4>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Thành viên</th>
+                        <th>Nhiệm vụ</th>
+                        <th>Deadline</th>
+                        <th>Trạng thái</th>
+                        <th>Ghi chú</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Hoàng Đình Bảo</td>
+                        <td>Tổng hợp nội dung, thiết kế Portfolio và kiểm tra minh chứng.</td>
+                        <td>Trước ngày nộp bài</td>
+                        <td>Hoàn thành</td>
+                        <td>Đã liên kết PDF và sản phẩm AI vào website.</td>
+                      </tr>
+                      <tr>
+                        <td>Các thành viên còn lại</td>
+                        <td>Thu thập tài liệu, góp ý nội dung và kiểm tra lỗi trình bày.</td>
+                        <td>Theo kế hoạch nhóm</td>
+                        <td>Đang cập nhật</td>
+                        <td>Cập nhật theo nhiệm vụ thực tế trong quá trình làm việc nhóm.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 4</h4>
+                <p>File PDF minh chứng cho phần sử dụng công cụ hợp tác trực tuyến cho dự án nhóm.</p>
+                <div class="pdf-links">
+                  <a href="tuan4.pdf" target="_blank" rel="noopener">Mở PDF tuần 4</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card card reveal" id="week-5">
+            <div class="project-number">05</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 5 - Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung</h3>
+                  <div class="project-badges">
+                    <span class="badge">Ý tưởng</span>
+                    <span class="badge">Prompt</span>
+                    <span class="badge">Chỉnh sửa</span>
+                  </div>
+                </div>
+                <div class="project-icon">✦</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>Trình bày sản phẩm nội dung số được AI hỗ trợ như poster, hình ảnh, video, bài viết hoặc infographic.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>ChatGPT để lên ý tưởng và viết prompt, công cụ tạo ảnh AI để tạo poster/infographic/hình ảnh, Canva hoặc trình chỉnh sửa ảnh để kiểm tra và hoàn thiện sản phẩm.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ol>
+                    <li>Lên ý tưởng: xác định chủ đề, mục tiêu và đối tượng người xem.</li>
+                    <li>Viết prompt: diễn đạt yêu cầu rõ ràng, chi tiết và có cấu trúc.</li>
+                    <li>Tạo sản phẩm: tạo poster, infographic hoặc hình ảnh theo prompt đã cung cấp.</li>
+                    <li>Kiểm tra và chỉnh sửa: đánh giá, sửa lỗi, tối ưu nội dung và bố cục.</li>
+                    <li>Hoàn thiện: xuất bản, lưu trữ và chia sẻ sản phẩm.</li>
+                  </ol>
+                </div>
+                <div class="detail-box">
+                  <h4>Bài học rút ra</h4>
+                  <p>AI chỉ là công cụ hỗ trợ; người học chịu trách nhiệm kiểm tra và hoàn thiện sản phẩm cuối cùng.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 5</h4>
+                <p>File PDF minh chứng cho phần sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung.</p>
+                <div class="pdf-links">
+                  <a href="tuan5.pdf" target="_blank" rel="noopener">Mở PDF tuần 5</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card card reveal" id="week-6">
+            <div class="project-number">06</div>
+            <div class="project-panel">
+              <div class="project-head">
+                <div>
+                  <h3>Bài 6 - Sử dụng AI có trách nhiệm trong học tập và nghiên cứu</h3>
+                  <div class="project-badges">
+                    <span class="badge">Trách nhiệm</span>
+                    <span class="badge">Quyền riêng tư</span>
+                    <span class="badge">Liêm chính</span>
+                  </div>
+                </div>
+                <div class="project-icon">⚖</div>
+              </div>
+              <div class="detail-grid">
+                <div class="detail-box">
+                  <h4>Mục tiêu</h4>
+                  <p>Xây dựng bộ nguyên tắc cá nhân khi sử dụng AI trong học tập, nghiên cứu và sáng tạo nội dung.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Công cụ sử dụng</h4>
+                  <p>Công cụ AI, tài liệu môn học, nguồn học thuật và hướng dẫn về liêm chính học thuật.</p>
+                </div>
+                <div class="detail-box">
+                  <h4>Quy trình thực hiện</h4>
+                  <ul>
+                    <li>Tìm hiểu lợi ích và rủi ro khi dùng AI.</li>
+                    <li>Xác định các tình huống dễ vi phạm học thuật.</li>
+                    <li>Xây dựng bộ nguyên tắc cá nhân.</li>
+                    <li>Liên hệ bộ nguyên tắc với các tình huống thực tế như làm báo cáo, viết code, tìm tài liệu và tạo nội dung số.</li>
+                    <li>Tự đánh giá mức độ tuân thủ nguyên tắc sau khi hoàn thiện Portfolio và điều chỉnh cách sử dụng AI nếu cần.</li>
+                  </ul>
+                </div>
+                <div class="detail-box">
+                  <h4>Bài học rút ra</h4>
+                  <p>Sử dụng AI đúng cách giúp học sâu hơn nhưng không thay thế tư duy cá nhân và trách nhiệm học thuật.</p>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Bộ nguyên tắc cá nhân khi sử dụng AI</h4>
+                <ol class="principles">
+                  <li>Ưu tiên sự thật và độ tin cậy khi sử dụng thông tin do AI gợi ý.</li>
+                  <li>Trung thực trong học tập, không dùng AI để gian lận hoặc né tránh nhiệm vụ cá nhân.</li>
+                  <li>Ghi nguồn rõ ràng khi sử dụng tài liệu, ý tưởng hoặc nội dung tham khảo.</li>
+                  <li>Bảo vệ dữ liệu cá nhân, không nhập thông tin nhạy cảm vào công cụ AI.</li>
+                  <li>Tôn trọng người khác, không dùng AI để tạo nội dung gây hại hoặc vi phạm quyền của người khác.</li>
+                  <li>Giữ tư duy độc lập, không lệ thuộc hoàn toàn vào câu trả lời của AI.</li>
+                  <li>Học để hiểu, không chỉ dùng AI để làm nhanh hoặc hoàn thành đối phó.</li>
+                </ol>
+              </div>
+              <div class="full-box">
+                <h4>Phân tích ngắn về rủi ro</h4>
+                <div class="risk-grid">
+                  <div class="risk-item">Đạo văn: tránh sao chép máy móc.</div>
+                  <div class="risk-item">Thông tin sai lệch: cần kiểm chứng.</div>
+                  <div class="risk-item">Phụ thuộc AI: giữ tư duy cá nhân.</div>
+                  <div class="risk-item">Quyền riêng tư: không nhập dữ liệu nhạy cảm.</div>
+                </div>
+              </div>
+              <div class="full-box">
+                <h4>Minh chứng tuần 6</h4>
+                <p>File PDF minh chứng cho phần sử dụng AI có trách nhiệm trong học tập và nghiên cứu.</p>
+                <div class="pdf-links">
+                  <a href="tuan6.pdf" target="_blank" rel="noopener">Mở PDF tuần 6</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. KỸ NĂNG ĐẠT ĐƯỢC ==================== -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Kỹ năng</span>
+          <h2 class="section-title">Kỹ năng đạt được</h2>
+          <p class="section-desc">Các kỹ năng được hình thành qua quá trình làm bài tập, thu thập minh chứng và thiết kế Portfolio.</p>
+        </div>
+
+        <div class="skills-grid">
+          <article class="skill-card card reveal"><h3>Quản lý tệp và thư mục</h3><span class="level">Tốt</span><div class="progress"><span style="width: 88%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Tìm kiếm thông tin học thuật</h3><span class="level">Khá tốt</span><div class="progress"><span style="width: 82%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Đánh giá nguồn thông tin</h3><span class="level">Khá tốt</span><div class="progress"><span style="width: 80%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Viết prompt hiệu quả</h3><span class="level">Tốt</span><div class="progress"><span style="width: 86%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Hợp tác trực tuyến</h3><span class="level">Tốt</span><div class="progress"><span style="width: 84%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Sáng tạo nội dung số</h3><span class="level">Khá tốt</span><div class="progress"><span style="width: 83%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Sử dụng AI có trách nhiệm</h3><span class="level">Tốt</span><div class="progress"><span style="width: 90%"></span></div></article>
+          <article class="skill-card card reveal"><h3>Trình bày Portfolio cá nhân</h3><span class="level">Tốt</span><div class="progress"><span style="width: 87%"></span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. TỔNG KẾT ==================== -->
+    <section class="summary" id="summary">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Tổng kết</span>
+          <h2 class="section-title">Tổng kết quá trình thực hiện Portfolio</h2>
+          <p class="section-desc">Nhìn lại quá trình học tập, kỹ năng đã rèn luyện và định hướng cải thiện trong tương lai.</p>
+        </div>
+
+        <article class="summary-highlight reveal">
+          <h3>Cảm nhận cá nhân</h3>
+          <p>
+            Sau khi hoàn thành dự án Portfolio, tôi nhận thấy việc học tập không chỉ dừng lại ở việc hoàn thành từng bài tập
+            riêng lẻ mà còn cần biết cách hệ thống hóa, trình bày và đánh giá lại quá trình học của bản thân. Thông qua dự án
+            này, tôi đã rèn luyện được kỹ năng quản lý tài liệu, tìm kiếm và đánh giá nguồn thông tin, viết prompt hiệu quả,
+            làm việc nhóm trực tuyến, sáng tạo nội dung số với AI và nhận thức rõ hơn về trách nhiệm khi sử dụng AI trong học tập.
+          </p>
+        </article>
+
+        <div class="summary-grid">
+          <article class="summary-card card reveal"><h3>Kỹ năng đã học được</h3><p>Tôi đã rèn luyện được kỹ năng quản lý tệp và thư mục, tìm kiếm thông tin học thuật, đánh giá nguồn đáng tin cậy, viết prompt rõ ràng, làm việc nhóm trực tuyến và trình bày sản phẩm học tập bằng website Portfolio.</p></article>
+          <article class="summary-card card reveal"><h3>Khó khăn đã gặp</h3><p>Khó khăn chính là sắp xếp minh chứng theo từng tuần, chọn nguồn thông tin phù hợp, diễn đạt nội dung ngắn gọn nhưng đầy đủ và thiết kế giao diện sao cho rõ ràng, dễ xem trên nhiều thiết bị.</p></article>
+          <article class="summary-card card reveal"><h3>Bài học kinh nghiệm</h3><p>Tôi nhận ra cần quản lý thời gian tốt hơn, lưu trữ tài liệu có hệ thống, kiểm chứng thông tin trước khi sử dụng và xem AI là công cụ hỗ trợ học tập chứ không thay thế tư duy cá nhân.</p></article>
+          <article class="summary-card card reveal"><h3>Định hướng phát triển</h3><p>Trong thời gian tới, tôi sẽ tiếp tục cập nhật Portfolio, bổ sung thêm sản phẩm thực hành, cải thiện kỹ năng thiết kế web, nâng cao khả năng sử dụng AI và áp dụng kiến thức mạng máy tính vào các dự án thực tế.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. MINH CHỨNG ==================== -->
+    <section id="evidence">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Minh chứng</span>
+          <h2 class="section-title">Khu vực chèn minh chứng học tập</h2>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="evidence-card card reveal"><div class="evidence-icon">WWW</div><h3>Link website Portfolio</h3><p>Website Portfolio đã triển khai trên GitHub Pages.</p><a class="btn btn-primary" href="https://dngtuu.github.io/digital-portfolio-ai-bao/" target="_blank" rel="noopener">Mở website</a></article>
+          <article class="evidence-card card reveal">
+            <div class="evidence-icon">PDF</div>
+            <h3>Bộ file minh chứng</h3>
+            <p>Các file minh chứng học tập được liên kết theo từng tuần.</p>
+            <div class="pdf-links">
+              <a href="tuan1.pptx" download>Tuần 1 - PowerPoint</a>
+              <a href="tuan2(1).pdf" target="_blank" rel="noopener">Tuần 2 - PDF</a>
+              <a href="tuan3.pdf" target="_blank" rel="noopener">Tuần 3 - PDF</a>
+              <a href="tuan4.pdf" target="_blank" rel="noopener">Tuần 4 - PDF</a>
+              <a href="tuan5.pdf" target="_blank" rel="noopener">Tuần 5 - PDF</a>
+              <a href="tuan6.pdf" target="_blank" rel="noopener">Tuần 6 - PDF</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 9. FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h2>Digital Portfolio</h2>
+        <p>Designed as a Digital Learning Portfolio</p>
+      </div>
+      <div class="footer-info">
+        <span>Họ tên: Hoàng Đình Bảo</span>
+        <span>Mã sinh viên: 25020477</span>
+        <span>Lớp môn học: UET.A6</span>
+        <span>Ngành: Kỹ thuật máy tính</span>
+        <span>Khóa: K70</span>
+        <span>Môn học: Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo</span>
+        <span>Năm học: 2025-2026</span>
+        <span>Email: 25020477@vnu.edu.vn</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Quay lại đầu trang">↑</button>
+
+  <script>
+    /* ==================== JAVASCRIPT ==================== */
+    const hamburger = document.getElementById("hamburger");
+    const navMenu = document.getElementById("navMenu");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const backToTop = document.getElementById("backToTop");
+    const revealItems = document.querySelectorAll(".reveal");
+    const sections = document.querySelectorAll("section[id]");
+
+    // Menu hamburger trên điện thoại
+    hamburger.addEventListener("click", () => {
+      const isOpen = navMenu.classList.toggle("open");
+      hamburger.classList.toggle("active", isOpen);
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    // Đóng menu sau khi bấm vào liên kết
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("open");
+        hamburger.classList.remove("active");
+        hamburger.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Nút quay lại đầu trang
+    window.addEventListener("scroll", () => {
+      backToTop.classList.toggle("show", window.scrollY > 450);
+    });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Hiệu ứng hiện nội dung khi cuộn
+    function revealOnScroll() {
+      const triggerBottom = window.innerHeight * 0.86;
+      revealItems.forEach((item) => {
+        if (item.getBoundingClientRect().top < triggerBottom) {
+          item.classList.add("show");
+        }
+      });
+    }
+
+    // Active menu theo section đang xem
+    function updateActiveMenu() {
+      let current = "";
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 130;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        const target = link.getAttribute("href").replace("#", "");
+        link.classList.toggle("active", target === current);
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("scroll", updateActiveMenu);
+    window.addEventListener("load", revealOnScroll);
+    window.addEventListener("load", updateActiveMenu);
+  </script>
+</body>
+</html>
